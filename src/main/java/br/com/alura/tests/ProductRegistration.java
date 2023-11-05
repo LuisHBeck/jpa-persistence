@@ -1,6 +1,8 @@
 package br.com.alura.tests;
 
+import br.com.alura.dao.ProductDao;
 import br.com.alura.models.Product;
+import br.com.alura.utils.JPAUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,10 +16,11 @@ public class ProductRegistration {
         cellPhone.setDescription("Incredible phone");
         cellPhone.setPrice(new BigDecimal("3981"));
 
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("store");
-        EntityManager em = factory.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
+        ProductDao dao = new ProductDao(em);
+        
         em.getTransaction().begin();
-        em.persist(cellPhone);
+        dao.register(cellPhone);
         em.getTransaction().commit();
         em.close();
     }
